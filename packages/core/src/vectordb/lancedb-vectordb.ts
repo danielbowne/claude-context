@@ -161,6 +161,36 @@ export class LanceDBVectorDatabase implements VectorDatabase {
         }
     }
 
+    /**
+     * Ensure FTS index exists for hybrid search functionality
+     */
+    private async ensureFTSIndex(table: any, collectionName: string): Promise<void> {
+        try {
+            // Check if FTS index already exists by trying to list indices
+            // LanceDB doesn't have a direct method to check if an index exists,
+            // so we'll attempt to create it and handle the error if it already exists
+            console.log(`🔍 Ensuring FTS index exists for collection: ${collectionName}`);
+            
+            try {
+                await table.createIndex("content", {
+                    config: (lancedb as any).Index.fts()
+                });
+                console.log(`✅ FTS index created for collection: ${collectionName}`);
+            } catch (indexError: any) {
+                // If index already exists, this is expected
+                if (indexError.message && indexError.message.includes('already exists')) {
+                    console.log(`ℹ️  FTS index already exists for collection: ${collectionName}`);
+                } else {
+                    console.warn(`⚠️  Could not create FTS index for collection ${collectionName}:`, indexError);
+                    throw indexError;
+                }
+            }
+        } catch (error) {
+            console.error(`❌ Failed to ensure FTS index for collection ${collectionName}:`, error);
+            throw error;
+        }
+    }
+
     async insert(collectionName: string, documents: VectorDocument[]): Promise<void> {
         await this.ensureInitialized();
 
@@ -309,16 +339,21 @@ export class LanceDBVectorDatabase implements VectorDatabase {
             // Create table with sample data
             const table = await this.db!.createTable(collectionName, sampleData, { mode: 'create' });
             
+            // Keep sample data temporarily for FTS index creation
             // Create FTS index on content field for hybrid search
             try {
+                console.log(`🔍 Creating FTS index for content field...`);
                 await table.createIndex("content", {
                     config: (lancedb as any).Index.fts()
                 });
-            } catch (error) {
-                console.warn('FTS index creation failed, continuing without it:', error);
+                console.log(`✅ FTS index created successfully for content field`);
+            } catch (error: any) {
+                console.error(`❌ Failed to create FTS index for content field:`, error);
+                // Don't continue silently - this is critical for hybrid search
+                throw new Error(`FTS index creation failed: ${error.message || error}`);
             }
             
-            // Remove sample data
+            // Now remove sample data after index creation
             await table.delete("id = '__sample__'");
             
             // Cache table reference
@@ -342,6 +377,9 @@ export class LanceDBVectorDatabase implements VectorDatabase {
 
         try {
             const table = await this.getTable(collectionName);
+            
+            // Ensure FTS index exists for hybrid search
+            await this.ensureFTSIndex(table, collectionName);
 
             console.log(`🔍 Preparing hybrid search for collection: ${collectionName}`);
 
@@ -365,30 +403,46 @@ export class LanceDBVectorDatabase implements VectorDatabase {
             // Perform vector search
             let vectorResults: any[] = [];
             if (vectorRequest && Array.isArray(vectorRequest.data)) {
-                let vectorQuery = table
-                    .vectorSearch(vectorRequest.data)
-                    .distanceType("cosine")
-                    .limit(limit * 2); // Overfetch for reranking
+                console.log(`🔍 Executing vector search with ${vectorRequest.data.length}D embedding`);
+                try {
+                    let vectorQuery = table
+                        .vectorSearch(vectorRequest.data)
+                        .distanceType("cosine")
+                        .limit(limit * 2); // Overfetch for reranking
 
-                if (options?.filterExpr && options.filterExpr.trim().length > 0) {
-                    vectorQuery = vectorQuery.where(options.filterExpr);
+                    if (options?.filterExpr && options.filterExpr.trim().length > 0) {
+                        vectorQuery = vectorQuery.where(options.filterExpr);
+                    }
+
+                    vectorResults = await vectorQuery.toArray();
+                    console.log(`✅ Vector search returned ${vectorResults.length} results`);
+                } catch (vectorError: any) {
+                    console.error(`❌ Vector search failed:`, vectorError);
+                    // Continue with empty vector results
+                    vectorResults = [];
                 }
-
-                vectorResults = await vectorQuery.toArray();
             }
 
             // Perform text search if text request exists
             let textResults: any[] = [];
             if (textRequest && typeof textRequest.data === 'string') {
-                let textQuery = table
-                    .search(textRequest.data, "fts")
-                    .limit(limit * 2); // Overfetch for reranking
+                console.log(`🔍 Executing FTS search for query: "${textRequest.data}"`);
+                try {
+                    let textQuery = table
+                        .search(textRequest.data, "fts")
+                        .limit(limit * 2); // Overfetch for reranking
 
-                if (options?.filterExpr && options.filterExpr.trim().length > 0) {
-                    textQuery = textQuery.where(options.filterExpr);
+                    if (options?.filterExpr && options.filterExpr.trim().length > 0) {
+                        textQuery = textQuery.where(options.filterExpr);
+                    }
+
+                    textResults = await textQuery.toArray();
+                    console.log(`✅ FTS search returned ${textResults.length} results`);
+                } catch (ftsError: any) {
+                    console.error(`❌ FTS search failed:`, ftsError);
+                    // Continue with just vector search if FTS fails
+                    textResults = [];
                 }
-
-                textResults = await textQuery.toArray();
             }
 
             // Simple RRF (Reciprocal Rank Fusion) reranking

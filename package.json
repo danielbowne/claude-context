@@ -1,15 +1,15 @@
 {
     "name": "claude-context",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "A powerful code indexing tool with multi-platform support",
     "private": true,
     "scripts": {
         "build": "pnpm -r --filter='!./examples/*' build && pnpm -r --filter='./examples/*' build",
         "build:core": "pnpm --filter @dannyboy2042/claude-context-core build",
-        "build:mcp": "pnpm --filter @dannyboy2042/claude-context-mcp build"
+        "build:mcp": "pnpm --filter @dannyboy2042/claude-context-mcp build",
         "dev": "pnpm -r dev",
         "dev:core": "pnpm --filter @dannyboy2042/claude-context-core dev",
-        "dev:mcp": "pnpm --filter @dannyboy2042/claude-context-mcp dev"
+        "dev:mcp": "pnpm --filter @dannyboy2042/claude-context-mcp dev",
         "clean": "pnpm -r clean",
         "lint": "pnpm -r lint",
         "lint:fix": "pnpm -r run lint:fix",

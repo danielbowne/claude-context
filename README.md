@@ -17,55 +17,50 @@
 
 Model Context Protocol (MCP) allows you to integrate Claude Context with your favorite AI coding assistants, e.g. Claude Code.
 
-## Quick Start
-### Prerequisites
+## 🚀 Quick Start
 
-**Claude Context works locally by default** - no external vector database needed! Just provide an OpenAI API key for embeddings.
+**Setup in 30 seconds** - Just one command!
 
-<details>
-<summary>Get OpenAI API Key for embedding model</summary>
+### Step 1: Get your OpenAI API Key
+Get a free API key from [OpenAI](https://platform.openai.com/api-keys) (starts with `sk-`)
 
-You need an OpenAI API key for the embedding model. You can get one by signing up at [OpenAI](https://platform.openai.com/api-keys).  
-
-Your API key will look like this: it always starts with `sk-`.  
-Copy your key and use it in the configuration examples below as `your-openai-api-key`.
-
-</details>
-
-<details>
-<summary>Optional: Use Zilliz Cloud for scalable vector database 👈</summary>
-
-By default, Claude Context uses LanceDB (local, embedded). For larger teams or advanced features, you can optionally use a hosted vector database like Milvus.
-
-### Configure MCP for Claude Code
-
-**System Requirements:**
-- Node.js >= 20.0.0 and < 24.0.0
-> Claude Context is not compatible with Node.js 24.0.0, you need downgrade it first if your node version is greater or equal to 24.
-
-#### Configuration
-
-Use the command line interface to add the Claude Context MCP server:
-
+### Step 2: Add to Claude Code
 ```bash
-# Add the Claude Context MCP server (uses LanceDB locally by default)
 claude mcp add claude-context -e OPENAI_API_KEY=your-openai-api-key -- npx @dannyboy2042/claude-context-mcp@latest
-
-# claude mcp add claude-context -e OPENAI_API_KEY=your-openai-api-key -e VECTOR_DB_TYPE=milvus -e MILVUS_TOKEN=milvus-cloud-api-key -- npx @dannyboy2042/claude-context-mcp@latest
 ```
 
-See the [Claude Code MCP documentation](https://docs.anthropic.com/en/docs/claude-code/mcp) for more details about MCP server management.
+**That's it!** 🎉 Claude Context will:
+- ✅ Install automatically with no setup required
+- ✅ Store everything locally using LanceDB (no cloud services needed)
+- ✅ Work with any codebase size
+- ✅ Enable hybrid vector + text search for better results
+
+### Step 3: Start using it
+1. Open Claude Code in your project directory
+2. Ask Claude to "index this codebase" 
+3. Then ask questions like "find the authentication logic" or "show me the database connection code"
+
+### 📁 Multiple Projects Support
+Claude Context automatically handles multiple projects by creating isolated collections for each codebase:
+- Each project gets its own collection based on the project's absolute path
+- Projects are completely isolated from each other
+- Switch between projects by opening Claude Code in different directories
+- All data stored locally in `~/.claude-context/lancedb/`
+
+**System Requirements:**
+- Node.js >= 20.0.0 (Claude Context works locally - no external services required!)
+
+See the [Claude Code MCP documentation](https://docs.anthropic.com/en/docs/claude-code/mcp) for more details.
 
 
-### Other MCP Client Configurations (Gemini CLI, Cursor, Windsurf, etc.)
+### Other MCP Client Configurations
+
+**Simple setup for any MCP client - just add your OpenAI API key!**
 
 <details>
 <summary><strong>Gemini CLI</strong></summary>
 
-Gemini CLI requires manual configuration through a JSON file:
-
-1. Create or edit the `~/.gemini/settings.json` file.
-2. Add the following configuration:
+Create or edit the `~/.gemini/settings.json` file:
 
 ```json
 {
@@ -74,21 +69,19 @@ Gemini CLI requires manual configuration through a JSON file:
       "command": "npx",
       "args": ["@dannyboy2042/claude-context-mcp@latest"],
       "env": {
-        "OPENAI_API_KEY": "your-openai-api-key",
-        "MILVUS_TOKEN": "your-milvus-cloud-api-key"
+        "OPENAI_API_KEY": "your-openai-api-key"
       }
     }
   }
 }
 ```
-3. Save the file and restart Gemini CLI to apply the changes.
 
 </details>
 
 <details>
 <summary><strong>Qwen Code</strong></summary>
 
-Create or edit the `~/.qwen/settings.json` file and add the following configuration:
+Create or edit the `~/.qwen/settings.json` file:
 
 ```json
 {
@@ -97,9 +90,7 @@ Create or edit the `~/.qwen/settings.json` file and add the following configurat
       "command": "npx",
       "args": ["@dannyboy2042/claude-context-mcp@latest"],
       "env": {
-        "OPENAI_API_KEY": "your-openai-api-key",
-        "MILVUS_ADDRESS": "milvus-cloud-public-endpoint",
-        "MILVUS_TOKEN": "milvus-cloud-api-key"
+        "OPENAI_API_KEY": "your-openai-api-key"
       }
     }
   }
@@ -116,7 +107,7 @@ Create or edit the `~/.qwen/settings.json` file and add the following configurat
 
 Go to: `Settings` -> `Cursor Settings` -> `MCP` -> `Add new global MCP server`
 
-Pasting the following configuration into your Cursor `~/.cursor/mcp.json` file is the recommended approach. You may also install in a specific project by creating `.cursor/mcp.json` in your project folder. See [Cursor MCP docs](https://docs.cursor.com/context/model-context-protocol) for more info.
+Add this to your Cursor `~/.cursor/mcp.json` file:
 
 ```json
 {
@@ -125,9 +116,7 @@ Pasting the following configuration into your Cursor `~/.cursor/mcp.json` file i
       "command": "npx",
       "args": ["-y", "@dannyboy2042/claude-context-mcp@latest"],
       "env": {
-        "OPENAI_API_KEY": "your-openai-api-key",
-        "MILVUS_ADDRESS": "milvus-cloud-public-endpoint",
-        "MILVUS_TOKEN": "milvus-cloud-api-key"
+        "OPENAI_API_KEY": "your-openai-api-key"
       }
     }
   }
@@ -151,8 +140,6 @@ Add the following configuration to your Void MCP settings:
       "args": ["-y", "@dannyboy2042/claude-context-mcp@latest"],
       "env": {
         "OPENAI_API_KEY": "your-openai-api-key",
-        "MILVUS_ADDRESS": "milvus-cloud-public-endpoint",
-        "MILVUS_TOKEN": "milvus-cloud-api-key"
       }
     }
   }
@@ -174,8 +161,6 @@ Add to your Claude Desktop configuration:
       "args": ["@dannyboy2042/claude-context-mcp@latest"],
       "env": {
         "OPENAI_API_KEY": "your-openai-api-key",
-        "MILVUS_ADDRESS": "milvus-cloud-public-endpoint",
-        "MILVUS_TOKEN": "milvus-cloud-api-key"
       }
     }
   }
@@ -197,8 +182,6 @@ Windsurf supports MCP configuration through a JSON file. Add the following confi
       "args": ["-y", "@dannyboy2042/claude-context-mcp@latest"],
       "env": {
         "OPENAI_API_KEY": "your-openai-api-key",
-        "MILVUS_ADDRESS": "milvus-cloud-public-endpoint",
-        "MILVUS_TOKEN": "milvus-cloud-api-key"
       }
     }
   }
@@ -220,8 +203,6 @@ The Claude Context MCP server integrates directly with Claude Code and other MCP
       "args": ["-y", "@dannyboy2042/claude-context-mcp@latest"],
       "env": {
         "OPENAI_API_KEY": "your-openai-api-key",
-        "MILVUS_ADDRESS": "milvus-cloud-public-endpoint",
-        "MILVUS_TOKEN": "milvus-cloud-api-key"
       }
     }
   }
@@ -268,8 +249,6 @@ Cline uses a JSON configuration file to manage MCP servers. To integrate the pro
       "args": ["@dannyboy2042/claude-context-mcp@latest"],
       "env": {
         "OPENAI_API_KEY": "your-openai-api-key",
-        "MILVUS_ADDRESS": "milvus-cloud-public-endpoint",
-        "MILVUS_TOKEN": "milvus-cloud-api-key"
       }
     }
   }
@@ -323,8 +302,6 @@ To configure Claude Context MCP in Augment Code, you can use either the graphica
       "args": ["-y", "@dannyboy2042/claude-context-mcp@latest"],
       "env": {
         "OPENAI_API_KEY": "your-openai-api-key",
-        "MILVUS_ADDRESS": "milvus-cloud-public-endpoint",
-        "MILVUS_TOKEN": "milvus-cloud-api-key"
       }
     }
   ]
@@ -350,8 +327,6 @@ Roo Code utilizes a JSON configuration file for MCP servers:
       "args": ["@dannyboy2042/claude-context-mcp@latest"],
       "env": {
         "OPENAI_API_KEY": "your-openai-api-key",
-        "MILVUS_ADDRESS": "milvus-cloud-public-endpoint",
-        "MILVUS_TOKEN": "milvus-cloud-api-key"
       }
     }
   }
@@ -387,14 +362,14 @@ For more detailed MCP environment variable configuration, see our [Environment V
 ![](assets/Architecture.png)
 
 
-### 🔧 Implementation Details
+### 🔧 Key Features
 
-- 🔍 **Hybrid Code Search**: Ask questions like *"find functions that handle user authentication"* and get relevant, context-rich code instantly using advanced hybrid search (BM25 + dense vector).
-- 🧠 **Context-Aware**: Discover large codebase, understand how different parts of your codebase relate, even across millions of lines of code.
-- ⚡ **Incremental Indexing**: Efficiently re-index only changed files using Merkle trees.
-- 🧩 **Intelligent Code Chunking**: Analyze code in Abstract Syntax Trees (AST) for chunking.
-- 🗄️ **Scalable**: Integrates with Zilliz Cloud for scalable vector search, no matter how large your codebase is.
-- 🛠️ **Customizable**: Configure file extensions, ignore patterns, and embedding models.
+- 🔍 **Hybrid Search**: Advanced hybrid search combining vector similarity + full-text search using RRF (Reciprocal Rank Fusion) for better results
+- 🏠 **100% Local**: Everything runs locally using LanceDB - your code never leaves your machine
+- ⚡ **Fast & Incremental**: Smart indexing that only processes changed files
+- 🧩 **AST-Powered**: Intelligent code chunking using Abstract Syntax Trees for better context
+- 🗄️ **No Limits**: Handle codebases of any size locally 
+- 🛠️ **Zero Config**: Works out of the box - just add your OpenAI API key
 
 ### Core Components
 Claude Context is a monorepo containing three main packages:
@@ -403,11 +378,20 @@ Claude Context is a monorepo containing three main packages:
 - **`@dannyboy2042/claude-context-mcp`**: Model Context Protocol server for AI agent integration
 
 ### Supported Technologies
-- **Embedding Providers**: [OpenAI](https://openai.com), [VoyageAI](https://voyageai.com), [Ollama](https://ollama.ai), [Gemini](https://gemini.google.com)
-- **Vector Databases**: [LanceDB](https://lancedb.github.io/lancedb/) (default, local), [Milvus](https://milvus.io) or [Zilliz Cloud](https://zilliz.com/cloud) (optional, cloud-based)
-- **Code Splitters**: AST-based splitter (with automatic fallback), LangChain character-based splitter
+- **Vector Database**: [LanceDB](https://lancedb.github.io/lancedb/) (local, embedded, zero-config) 
+- **Embedding**: [OpenAI](https://openai.com) text-embedding-3-small (other providers available: VoyageAI, Ollama, Gemini)
+- **Code Analysis**: AST-based intelligent chunking with LangChain fallback
 - **Languages**: TypeScript, JavaScript, Python, Java, C++, C#, Go, Rust, PHP, Ruby, Swift, Kotlin, Scala, Markdown
-- **Development Tools**: Model Context Protocol, Claude Code
+- **AI Clients**: Claude Code, Cursor, Windsurf, Gemini CLI, and all MCP-compatible clients
+
+<details>
+<summary>🔧 Advanced: Optional Cloud Vector Database</summary>
+
+For enterprise teams or advanced use cases, you can optionally configure Milvus/Zilliz Cloud by setting environment variables:
+```bash
+claude mcp add claude-context -e OPENAI_API_KEY=your-key -e VECTOR_DB_TYPE=milvus -e MILVUS_TOKEN=your-token -- npx @dannyboy2042/claude-context-mcp@latest
+```
+</details>
 
 ---
 
