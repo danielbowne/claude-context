@@ -22,7 +22,7 @@ import {
     CallToolRequestSchema
 } from "@modelcontextprotocol/sdk/types.js";
 import { Context } from "@dannyboy2042/claude-context-core";
-import { MilvusVectorDatabase } from "@dannyboy2042/claude-context-core";
+import { LanceDBVectorDatabase } from "@dannyboy2042/claude-context-core";
 
 // Import our modular components
 import { createMcpConfig, logConfigurationSummary, showHelpMessage, ContextMcpConfig } from "./config.js";
@@ -59,10 +59,10 @@ class ContextMcpServer {
         const embedding = createEmbeddingInstance(config);
         logEmbeddingProviderInfo(config, embedding);
 
-        // Initialize vector database
-        const vectorDatabase = new MilvusVectorDatabase({
-            address: config.milvusAddress,
-            ...(config.milvusToken && { token: config.milvusToken })
+        // Initialize vector database (LanceDB as default)
+        console.log('[VECTORDB] Using LanceDB for local vector storage');
+        const vectorDatabase = new LanceDBVectorDatabase({
+            uri: process.env.LANCEDB_URI || '~/.claude-context/lancedb'
         });
 
         // Initialize Claude Context
