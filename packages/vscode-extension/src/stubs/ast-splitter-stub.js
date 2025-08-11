@@ -50,7 +50,7 @@ class AstCodeSplitterStub {
         this.loadedLanguages = new Map();
         // Import LangChain splitter as fallback
         try {
-            const { LangChainCodeSplitter } = require('@zilliz/claude-context-core');
+            const { LangChainCodeSplitter } = require('@dannyboy2042/claude-context-core');
             this.fallbackSplitter = new LangChainCodeSplitter(chunkSize, chunkOverlap);
         } catch (error) {
             console.error('Failed to initialize LangChain fallback splitter:', error);

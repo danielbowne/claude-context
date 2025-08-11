@@ -43,7 +43,7 @@ Natural language queries are processed using both dense vector embeddings and BM
 
 ## Architecture Components
 
-### Core Engine (`@zilliz/claude-context-core`)
+### Core Engine (`@dannyboy2042/claude-context-core`)
 The foundational indexing engine that handles:
 - Code parsing and analysis
 - Embedding generation

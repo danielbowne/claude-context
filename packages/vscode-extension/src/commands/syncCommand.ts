@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Context } from '@zilliz/claude-context-core';
+import { Context } from '@dannyboy2042/claude-context-core';
 import * as fs from 'fs';
 
 export class SyncCommand {

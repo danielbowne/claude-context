@@ -1,4 +1,4 @@
-# @zilliz/claude-context-core
+# @dannyboy2042/claude-context-core
 ![](../../assets/claude-context.png)
 
 The core indexing engine for Claude Context - a powerful tool for semantic search and analysis of codebases using vector embeddings and AI.
