@@ -6,20 +6,16 @@
     "scripts": {
         "build": "pnpm -r --filter='!./examples/*' build && pnpm -r --filter='./examples/*' build",
         "build:core": "pnpm --filter @dannyboy2042/claude-context-core build",
-        "build:vscode": "pnpm --filter semanticcodesearch compile",
-        "build:mcp": "pnpm --filter @dannyboy2042/claude-context-mcp build",
+        "build:mcp": "pnpm --filter @dannyboy2042/claude-context-mcp build"
         "dev": "pnpm -r dev",
         "dev:core": "pnpm --filter @dannyboy2042/claude-context-core dev",
-        "dev:vscode": "pnpm --filter semanticcodesearch watch",
-        "dev:mcp": "pnpm --filter @dannyboy2042/claude-context-mcp dev",
+        "dev:mcp": "pnpm --filter @dannyboy2042/claude-context-mcp dev"
         "clean": "pnpm -r clean",
         "lint": "pnpm -r lint",
         "lint:fix": "pnpm -r run lint:fix",
         "typecheck": "pnpm -r run typecheck",
         "release:core": "pnpm --filter @dannyboy2042/claude-context-core... run build && pnpm --filter @dannyboy2042/claude-context-core publish --access public --no-git-checks",
-        "release:mcp": "pnpm --filter @dannyboy2042/claude-context-mcp... run build && pnpm --filter @dannyboy2042/claude-context-mcp publish --access public --no-git-checks",
-        "release:vscode": "pnpm --filter @dannyboy2042/claude-context-core build && pnpm --filter semanticcodesearch run webpack && pnpm --filter semanticcodesearch release",
-        "example:basic": "pnpm --filter claude-context-basic-example start"
+        "release:mcp": "pnpm --filter @dannyboy2042/claude-context-mcp... run build && pnpm --filter @dannyboy2042/claude-context-mcp publish --access public --no-git-checks"
     },
     "devDependencies": {
         "@types/node": "^20.0.0",

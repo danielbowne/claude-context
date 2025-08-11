@@ -210,7 +210,7 @@ Windsurf supports MCP configuration through a JSON file. Add the following confi
 <details>
 <summary><strong>VS Code</strong></summary>
 
-The Claude Context MCP server can be used with VS Code through MCP-compatible extensions. Add the following configuration to your VS Code MCP settings:
+The Claude Context MCP server integrates directly with Claude Code and other MCP-compatible clients:
 
 ```json
 {
@@ -400,7 +400,6 @@ For more detailed MCP environment variable configuration, see our [Environment V
 Claude Context is a monorepo containing three main packages:
 
 - **`@dannyboy2042/claude-context-core`**: Core indexing engine with embedding and vector database integration
-- **VSCode Extension**: Semantic Code Search extension for Visual Studio Code
 - **`@dannyboy2042/claude-context-mcp`**: Model Context Protocol server for AI agent integration
 
 ### Supported Technologies
@@ -408,13 +407,13 @@ Claude Context is a monorepo containing three main packages:
 - **Vector Databases**: [LanceDB](https://lancedb.github.io/lancedb/) (default, local), [Milvus](https://milvus.io) or [Zilliz Cloud](https://zilliz.com/cloud) (optional, cloud-based)
 - **Code Splitters**: AST-based splitter (with automatic fallback), LangChain character-based splitter
 - **Languages**: TypeScript, JavaScript, Python, Java, C++, C#, Go, Rust, PHP, Ruby, Swift, Kotlin, Scala, Markdown
-- **Development Tools**: VSCode, Model Context Protocol
+- **Development Tools**: Model Context Protocol, Claude Code
 
 ---
 
 ## 📦 Other Ways to Use Claude Context
 
-While MCP is the recommended way to use Claude Context with AI assistants, you can also use it directly or through the VSCode extension.
+The MCP server is the primary way to use Claude Context with AI assistants like Claude Code.
 
 ### Build Applications with Core Package
 
@@ -455,17 +454,6 @@ results.forEach(result => {
 });
 ```
 
-### VSCode Extension
-
-Integrates Claude Context directly into your IDE. Provides an intuitive interface for semantic code search and navigation.
-
-1. **Direct Link**: [Install from VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=zilliz.semanticcodesearch)
-2. **Manual Search**:
-    - Open Extensions view in VSCode (Ctrl+Shift+X or Cmd+Shift+X on Mac)
-    - Search for "Semantic Code Search"
-    - Click Install
-
-![img](https://lh7-rt.googleusercontent.com/docsz/AD_4nXdtCtT9Qi6o5mGVoxzX50r8Nb6zDFcjvTQR7WZ-xMbEsHEPPhSYAFVJ7q4-rETzxJ8wy1cyZmU8CmtpNhAU8PGOqVnE2kc2HCn1etDg97Qsh7m89kBjG4ZT7XBgO4Dp7BfFZx7eow?key=qYdFquJrLcfXCUndY-YRBQ)
 ---
 
 ## 🛠️ Development
@@ -555,7 +543,6 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 **Package-specific contributing guides:**
 - [Core Package Contributing](packages/core/CONTRIBUTING.md)
 - [MCP Server Contributing](packages/mcp/CONTRIBUTING.md)  
-- [VSCode Extension Contributing](packages/vscode-extension/CONTRIBUTING.md)
 
 ---
 
@@ -566,7 +553,6 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 - [ ] Agent-based interactive search mode
 - [x] Enhanced code chunking strategies
 - [ ] Search result ranking optimization
-- [ ] Robust Chrome Extension
 
 ---
 
@@ -579,7 +565,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🔗 Links
 
 - [GitHub Repository](https://github.com/danielbowne/claude-context)
-- [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=zilliz.semanticcodesearch)
 - [LanceDB Documentation](https://lancedb.github.io/lancedb/)
 - [Milvus Documentation](https://milvus.io/docs)
 - [Zilliz Cloud](https://zilliz.com/cloud)
