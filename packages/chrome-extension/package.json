@@ -1,5 +1,5 @@
 {
-    "name": "@zilliz/claude-context-chrome-extension",
+    "name": "@dannyboy2042/claude-context-chrome-extension",
     "version": "0.1.0",
     "description": "Claude Context Chrome extension for web-based code indexing",
     "private": true,
@@ -13,7 +13,7 @@
         "build:milvus": "./build.sh"
     },
     "dependencies": {
-        "@zilliz/claude-context-core": "workspace:*"
+        "@dannyboy2042/claude-context-core": "workspace:*"
     },
     "overrides": {
         "@zilliz/milvus2-sdk-node": false
